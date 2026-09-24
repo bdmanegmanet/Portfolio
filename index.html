@@ -209,7 +209,23 @@ async function initFirebase() {
       visitorUid = user?.uid || null;
       visitorEmail = user?.email || "";
       if (visitorEmail) localStorage.setItem("portfolio_chat_email_v3", visitorEmail);
-      if (user && chatId) {
+
+      if (!user) {
+        // A chat ID from an older anonymous/signed-out session must not be reused.
+        if (unsubscribe) {
+          unsubscribe();
+          unsubscribe = null;
+        }
+        form.style.display = "none";
+        chatId = null;
+        visitorName = "";
+        localStorage.removeItem("portfolio_chat_id_v2");
+        localStorage.removeItem("portfolio_chat_name_v2");
+        showStart();
+        return;
+      }
+
+      if (chatId) {
         form.style.display = "flex";
         startListener();
       } else {
@@ -342,21 +358,30 @@ input.addEventListener("keydown", e => {
 });
 fab.onclick = () => {
   const opening = !win.classList.contains("open");
-  win.classList.toggle("open");
-  if (opening) {
-    if (firebaseReady) {
-      if (chatId) {
-        form.style.display = "flex";
-        startListener();
-      } else if (visitorName && currentUser) {
-        showStart();
-        const field = document.getElementById("visitorName");
-        if (field) field.value = visitorName;
-      } else {
-        showStart();
-      }
-    } else {
-      showChatMessage("Live Chat সংযোগ হচ্ছে...");
+  win.classList.toggle("open", opening);
+  if (!opening) return;
+
+  if (!firebaseReady) {
+    showChatMessage("Live Chat সংযোগ হচ্ছে...");
+    return;
+  }
+
+  // Never open a Firestore listener for a cached chat when the visitor is signed out.
+  // This prevents stale/anonymous chat IDs from causing a Firestore permission error.
+  if (!currentUser || !visitorUid) {
+    form.style.display = "none";
+    showStart();
+    return;
+  }
+
+  if (chatId) {
+    form.style.display = "flex";
+    startListener();
+  } else {
+    showStart();
+    if (visitorName) {
+      const field = document.getElementById("visitorName");
+      if (field) field.value = visitorName;
     }
   }
 };
