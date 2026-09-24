@@ -163,7 +163,7 @@ let db = null;
 let auth = null;
 
 // Optional Google Chat bridge. Leave empty until the Apps Script web app is deployed.
-const GOOGLE_CHAT_BRIDGE_URL = "";
+const GOOGLE_CHAT_BRIDGE_URL = "https://script.google.com/macros/s/AKfycbzaki2R-wT1zHHRO8AKQmUlIpM2vKwjqXSA2s7o0BXWinsk78vdNkLTTmzb75yhRJPljQ/exec";
 async function notifyGoogleChatBridge(payload) {
   if (!GOOGLE_CHAT_BRIDGE_URL) return;
   try {
