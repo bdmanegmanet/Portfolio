@@ -1,0 +1,1 @@
+// Google Chat bridge configuration\n// Set the Apps Script /exec URL in index.html after deployment.\nwindow.GOOGLE_CHAT_BRIDGE_URL = "";\n
