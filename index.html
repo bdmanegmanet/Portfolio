@@ -89,7 +89,7 @@ footer{padding:34px 0;border-top:1px solid var(--line);color:var(--muted);font-s
 
 <button class="chat-fab" id="chatFab" aria-label="Live Chat" title="Live Chat">💬</button>
 <div class="chat-window" id="chatWindow">
-  <div class="chat-head"><b>💬 Live Chat</b><button class="chat-close" id="chatClose">✕</button></div>
+  <div class="chat-head"><b>💬 Live Chat</b><div style="display:flex;gap:6px"><a href="login.html" style="color:#fff;font-size:.75rem;padding:6px 8px;background:rgba(255,255,255,.14);border-radius:8px">Login</a><button class="chat-close" id="chatClose">✕</button></div></div>
   <div class="chat-body" id="chatBody"></div>
   <div class="chat-form" id="chatForm" style="display:none">
     <textarea id="chatInput" placeholder="আপনার মেসেজ লিখুন..."></textarea>
@@ -101,7 +101,7 @@ footer{padding:34px 0;border-top:1px solid var(--line);color:var(--muted);font-s
 <footer class="container"><span>© <span id="year"></span> MD. ARIFUL ISLAM</span><span><span class="lang-bn">Built with HTML • CSS • JavaScript</span><span class="lang-en">Built with HTML • CSS • JavaScript</span></span></footer>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, signOut } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -162,6 +162,23 @@ let currentUser = null;
 let db = null;
 let auth = null;
 
+// Optional Google Chat bridge. Leave empty until the Apps Script web app is deployed.
+const GOOGLE_CHAT_BRIDGE_URL = "";
+async function notifyGoogleChatBridge(payload) {
+  if (!GOOGLE_CHAT_BRIDGE_URL) return;
+  try {
+    await fetch(GOOGLE_CHAT_BRIDGE_URL, {
+      method: "POST",
+      headers: {"Content-Type":"text/plain;charset=utf-8"},
+      body: JSON.stringify(payload),
+      mode: "no-cors",
+      keepalive: true
+    });
+  } catch (e) {
+    console.warn("Google Chat bridge notification failed:", e);
+  }
+}
+
 function esc(s) {
   return String(s).replace(/[&<>"']/g, m => ({
     "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"
@@ -173,12 +190,13 @@ function showChatMessage(text) {
 function showStart() {
   form.style.display = "none";
   if (!currentUser) {
-    chatBody.innerHTML = '<div class="chat-start"><b>🔐 Google দিয়ে Login করুন</b><p class="chat-note">চ্যাট করার আগে আপনার Gmail/Google account দিয়ে একবার Sign in করতে হবে।</p><button id="googleLogin">Continue with Google</button></div>';
+    chatBody.innerHTML = '<div class="chat-start"><b>🔐 Sign up / Login করুন</b><p class="chat-note">চ্যাট করার আগে আপনার account তৈরি করে Login করতে হবে।</p><div style="display:grid;gap:8px"><a class="btn primary" style="text-align:center" href="signup.html">Create Account</a><a class="btn" style="text-align:center" href="login.html">Login</a><button id="googleLogin" class="btn">Continue with Google</button></div></div>';
     document.getElementById("googleLogin").onclick = loginWithGoogle;
     return;
   }
-  chatBody.innerHTML = '<div class="chat-start"><b>চ্যাট শুরু করুন</b><p class="chat-note">আপনি হিসেবে: <strong>' + esc(currentUser.email || "") + '</strong></p><input id="visitorName" placeholder="আপনার নাম" maxlength="60" value="' + esc(currentUser.displayName || visitorName || "") + '"><button id="startChat">Start Chat</button></div>';
+  chatBody.innerHTML = '<div class="chat-start"><b>চ্যাট শুরু করুন</b><p class="chat-note">Signed in as: <strong>' + esc(currentUser.email || "") + '</strong></p><input id="visitorName" placeholder="আপনার নাম" maxlength="60" value="' + esc(currentUser.displayName || visitorName || "") + '"><button id="startChat">Start Chat</button><button id="logoutChat" class="btn" style="background:transparent;color:var(--text);border:1px solid var(--line)">Logout</button></div>';
   document.getElementById("startChat").onclick = startChat;
+  document.getElementById("logoutChat").onclick = async () => { await signOut(auth); chatId=null; visitorName=""; localStorage.removeItem("portfolio_chat_id_v2"); localStorage.removeItem("portfolio_chat_name_v2"); };
 }
 async function initFirebase() {
   try {
@@ -212,6 +230,16 @@ async function loginWithGoogle() {
     console.error("Google login failed:", error);
     showChatMessage("Google Login সম্পন্ন হয়নি। আবার চেষ্টা করুন।");
   }
+}
+
+async function loginWithEmail(email, password) {
+  return signInWithEmailAndPassword(auth, email, password);
+}
+
+async function signupWithEmail(name, email, password) {
+  const cred = await createUserWithEmailAndPassword(auth, email, password);
+  if (name) await updateProfile(cred.user, {displayName: name});
+  return cred;
 }
 async function startChat() {
   const nameInput = document.getElementById("visitorName");
@@ -291,6 +319,14 @@ async function sendMessage() {
       status: "open",
       lastSender: "visitor"
     }, {merge:true});
+    await notifyGoogleChatBridge({
+      action: "visitor_message",
+      chatId,
+      visitorName: visitorName || currentUser?.displayName || "Visitor",
+      visitorEmail: currentUser?.email || visitorEmail || "",
+      text,
+      sentAt: new Date().toISOString()
+    });
   } catch (error) {
     console.error("Message send failed:", error);
     showChatMessage("মেসেজ পাঠানো যায়নি। Firestore permission পরীক্ষা করুন।");
