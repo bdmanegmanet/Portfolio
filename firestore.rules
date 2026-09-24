@@ -1,0 +1,19 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAdmin() {
+      return request.auth != null && request.auth.token.email == "ariful40807@gmail.com";
+    }
+    match /chats/{chatId} {
+      allow create: if request.auth != null && request.resource.data.ownerUid == request.auth.uid;
+      allow read: if isAdmin() || (request.auth != null && resource.data.ownerUid == request.auth.uid);
+      allow update: if isAdmin() || (request.auth != null && resource.data.ownerUid == request.auth.uid && request.resource.data.ownerUid == resource.data.ownerUid);
+      allow delete: if isAdmin();
+      match /messages/{messageId} {
+        allow read: if isAdmin() || (request.auth != null && get(/databases/$(database)/documents/chats/$(chatId)).data.ownerUid == request.auth.uid);
+        allow create: if isAdmin() || (request.auth != null && get(/databases/$(database)/documents/chats/$(chatId)).data.ownerUid == request.auth.uid && request.resource.data.sender == "visitor");
+        allow update, delete: if isAdmin();
+      }
+    }
+  }
+}
