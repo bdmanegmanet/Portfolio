@@ -113,61 +113,194 @@ const firebaseConfig = {
   appId: "1:981108059379:web:0172685d73f066d02adb86",
   measurementId: "G-6992KVEVPG"
 };
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);\nconst auth = getAuth(app);
 
-const root=document.documentElement, body=document.body, themeBtn=document.getElementById('themeBtn'), langBtn=document.getElementById('langBtn');
-const savedTheme=localStorage.getItem('theme'); if(savedTheme) root.dataset.theme=savedTheme;
-function syncTheme(){const dark=root.dataset.theme==='dark';themeBtn.textContent=dark?'☀':'☾';}
-syncTheme();
-themeBtn.onclick=()=>{const dark=root.dataset.theme==='dark';root.dataset.theme=dark?'light':'dark';localStorage.setItem('theme',root.dataset.theme);syncTheme();};
-let lang=localStorage.getItem('lang')||'bn'; function syncLang(){body.classList.toggle('en',lang==='en');langBtn.textContent=lang==='bn'?'EN':'বাংলা';document.documentElement.lang=lang;}
-syncLang(); langBtn.onclick=()=>{lang=lang==='bn'?'en':'bn';localStorage.setItem('lang',lang);syncLang();};
-document.getElementById('year').textContent=new Date().getFullYear();
-
-const fab=document.getElementById('chatFab'), win=document.getElementById('chatWindow'), close=document.getElementById('chatClose');
-const chatBody=document.getElementById('chatBody'), form=document.getElementById('chatForm'), input=document.getElementById('chatInput'), send=document.getElementById('chatSend');
-let chatId=localStorage.getItem('portfolio_chat_id');
-let visitorName=localStorage.getItem('portfolio_chat_name')||"Visitor";
-let unsubscribe=null;\nlet visitorUid=null;\nlet readyPromise=signInAnonymously(auth).then(({user})=>{visitorUid=user.uid;}).catch(()=>null);
-
-function esc(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]));}
-function renderStart(){
-  if(chatId){ form.style.display='flex'; startListener(); return; }
-  chatBody.innerHTML='<div class="chat-start"><b>চ্যাট শুরু করুন</b><p class="chat-note">আপনার নাম দিন, তারপর সরাসরি মেসেজ পাঠাতে পারবেন।</p><input id="visitorName" placeholder="আপনার নাম"><button id="startChat">Start Chat</button></div>';
-  document.getElementById('startChat').onclick=async()=>{
-    const n=document.getElementById('visitorName').value.trim();
-    if(!n)return;
-    visitorName=n; localStorage.setItem('portfolio_chat_name',n);
-    const ref=doc(collection(db,'chats')); chatId=ref.id;
-    await readyPromise;\n    await setDoc(ref,{visitorName:n,ownerUid:visitorUid,createdAt:serverTimestamp(),updatedAt:serverTimestamp(),status:'open',lastSender:'visitor'});
-    localStorage.setItem('portfolio_chat_id',chatId);
-    form.style.display='flex'; startListener();
-  };
+const root = document.documentElement;
+const body = document.body;
+const themeBtn = document.getElementById("themeBtn");
+const langBtn = document.getElementById("langBtn");
+const savedTheme = localStorage.getItem("theme");
+if (savedTheme) root.dataset.theme = savedTheme;
+function syncTheme() {
+  themeBtn.textContent = root.dataset.theme === "dark" ? "☀" : "☾";
 }
-function startListener(){
-  if(unsubscribe)unsubscribe();
-  const q=query(collection(db,'chats',chatId,'messages'),orderBy('createdAt','asc'));
-  unsubscribe=onSnapshot(q,snap=>{
-    chatBody.innerHTML='';
-    if(snap.empty){chatBody.innerHTML='<div class="chat-note">আপনার মেসেজ লিখুন। আমি যত দ্রুত সম্ভব উত্তর দেব।</div>';}
-    snap.forEach(d=>{
-      const m=d.data(), who=m.sender==='admin'?'admin':'visitor';
-      const t=m.createdAt?.toDate ? m.createdAt.toDate().toLocaleString('bn-BD') : '';
-      chatBody.insertAdjacentHTML('beforeend',`<div class="chat-msg ${who}">${esc(m.text||'')}<small>${who==='admin'?'Admin':esc(visitorName)} · ${t}</small></div>`);
+syncTheme();
+themeBtn.onclick = () => {
+  const dark = root.dataset.theme === "dark";
+  root.dataset.theme = dark ? "light" : "dark";
+  localStorage.setItem("theme", root.dataset.theme);
+  syncTheme();
+};
+let lang = localStorage.getItem("lang") || "bn";
+function syncLang() {
+  body.classList.toggle("en", lang === "en");
+  langBtn.textContent = lang === "bn" ? "EN" : "বাংলা";
+  document.documentElement.lang = lang;
+}
+syncLang();
+langBtn.onclick = () => {
+  lang = lang === "bn" ? "en" : "bn";
+  localStorage.setItem("lang", lang);
+  syncLang();
+};
+document.getElementById("year").textContent = new Date().getFullYear();
+
+const fab = document.getElementById("chatFab");
+const win = document.getElementById("chatWindow");
+const close = document.getElementById("chatClose");
+const chatBody = document.getElementById("chatBody");
+const form = document.getElementById("chatForm");
+const input = document.getElementById("chatInput");
+const send = document.getElementById("chatSend");
+
+let chatId = localStorage.getItem("portfolio_chat_id_v2");
+let visitorName = localStorage.getItem("portfolio_chat_name_v2") || "";
+let unsubscribe = null;
+let visitorUid = null;
+let firebaseReady = false;
+let db = null;
+let auth = null;
+
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, m => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"
+  }[m]));
+}
+function showChatMessage(text) {
+  chatBody.innerHTML = '<div class="chat-note">' + esc(text) + '</div>';
+}
+function showStart() {
+  form.style.display = "none";
+  chatBody.innerHTML = '<div class="chat-start"><b>চ্যাট শুরু করুন</b><p class="chat-note">আপনার নাম দিন, তারপর সরাসরি মেসেজ পাঠাতে পারবেন।</p><input id="visitorName" placeholder="আপনার নাম" maxlength="60"><button id="startChat">Start Chat</button></div>';
+  document.getElementById("startChat").onclick = startChat;
+}
+async function initFirebase() {
+  try {
+    const app = initializeApp(firebaseConfig);
+    db = getFirestore(app);
+    auth = getAuth(app);
+    const result = await signInAnonymously(auth);
+    visitorUid = result.user.uid;
+    firebaseReady = true;
+    if (chatId) {
+      form.style.display = "flex";
+      startListener();
+    } else {
+      showStart();
+    }
+  } catch (error) {
+    console.error("Firebase chat initialization failed:", error);
+    firebaseReady = false;
+    showChatMessage("Live Chat এখন সংযোগ করতে পারছে না। কিছুক্ষণ পরে আবার চেষ্টা করুন।");
+  }
+}
+async function startChat() {
+  const nameInput = document.getElementById("visitorName");
+  const n = nameInput?.value.trim();
+  if (!n) {
+    nameInput?.focus();
+    return;
+  }
+  if (!firebaseReady || !visitorUid || !db) {
+    showChatMessage("Chat service প্রস্তুত হচ্ছে। আবার চেষ্টা করুন।");
+    return;
+  }
+  try {
+    visitorName = n;
+    const ref = doc(collection(db, "chats"));
+    chatId = ref.id;
+    await setDoc(ref, {
+      visitorName: n,
+      ownerUid: visitorUid,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+      status: "open",
+      lastSender: "visitor"
     });
-    chatBody.scrollTop=chatBody.scrollHeight;
+    localStorage.setItem("portfolio_chat_id_v2", chatId);
+    localStorage.setItem("portfolio_chat_name_v2", visitorName);
+    form.style.display = "flex";
+    startListener();
+  } catch (error) {
+    console.error("Could not create chat:", error);
+    showChatMessage("Chat শুরু করা যাচ্ছে না। Firebase Firestore permission/database settings পরীক্ষা করুন।");
+  }
+}
+function startListener() {
+  if (!db || !chatId) return;
+  if (unsubscribe) unsubscribe();
+  const q = query(collection(db, "chats", chatId, "messages"), orderBy("createdAt", "asc"));
+  unsubscribe = onSnapshot(q, snap => {
+    chatBody.innerHTML = "";
+    if (snap.empty) {
+      showChatMessage("আপনার মেসেজ লিখুন। আমি যত দ্রুত সম্ভব উত্তর দেব।");
+    }
+    snap.forEach(d => {
+      const m = d.data();
+      const who = m.sender === "admin" ? "admin" : "visitor";
+      const t = m.createdAt?.toDate ? m.createdAt.toDate().toLocaleString("bn-BD") : "";
+      chatBody.insertAdjacentHTML("beforeend",
+        '<div class="chat-msg ' + who + '">' + esc(m.text || "") +
+        '<small>' + (who === "admin" ? "Admin" : esc(visitorName || "আপনি")) + " · " + t + "</small></div>"
+      );
+    });
+    chatBody.scrollTop = chatBody.scrollHeight;
+  }, error => {
+    console.error("Chat listener error:", error);
+    showChatMessage("Chat data পাওয়া যাচ্ছে না। Firestore Security Rules বা Database setup পরীক্ষা করুন।");
   });
 }
-async function sendMessage(){
-  const text=input.value.trim(); if(!text||!chatId)return;
-  input.value='';
-  await addDoc(collection(db,'chats',chatId,'messages'),{text,sender:'visitor',senderName:visitorName,createdAt:serverTimestamp()});
-  await setDoc(doc(db,'chats',chatId),{updatedAt:serverTimestamp(),status:'open'},{merge:true});
+async function sendMessage() {
+  const text = input.value.trim();
+  if (!text || !chatId || !firebaseReady) return;
+  input.value = "";
+  try {
+    await addDoc(collection(db, "chats", chatId, "messages"), {
+      text,
+      sender: "visitor",
+      senderName: visitorName || "Visitor",
+      createdAt: serverTimestamp()
+    });
+    await setDoc(doc(db, "chats", chatId), {
+      updatedAt: serverTimestamp(),
+      status: "open",
+      lastSender: "visitor"
+    }, {merge:true});
+  } catch (error) {
+    console.error("Message send failed:", error);
+    showChatMessage("মেসেজ পাঠানো যায়নি। Firestore permission পরীক্ষা করুন।");
+    input.value = text;
+  }
 }
-send.onclick=sendMessage; input.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}});
-fab.onclick=()=>{win.classList.toggle('open');if(win.classList.contains('open'))renderStart();};
-close.onclick=()=>win.classList.remove('open');
+send.onclick = sendMessage;
+input.addEventListener("keydown", e => {
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
+});
+fab.onclick = () => {
+  const opening = !win.classList.contains("open");
+  win.classList.toggle("open");
+  if (opening) {
+    if (firebaseReady) {
+      if (chatId) {
+        form.style.display = "flex";
+        startListener();
+      } else if (visitorName) {
+        showStart();
+        const field = document.getElementById("visitorName");
+        if (field) field.value = visitorName;
+      } else {
+        showStart();
+      }
+    } else {
+      showChatMessage("Live Chat সংযোগ হচ্ছে...");
+    }
+  }
+};
+close.onclick = () => win.classList.remove("open");
+
+initFirebase();
 </script>
 </body>
 </html>
