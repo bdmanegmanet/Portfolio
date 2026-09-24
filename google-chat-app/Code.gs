@@ -1,5 +1,5 @@
 const FIREBASE_PROJECT_ID = PropertiesService.getScriptProperties().getProperty("FIREBASE_PROJECT_ID") || "live-chat-5fb87";
-const CHAT_SPACE = PropertiesService.getScriptProperties().getProperty("GOOGLE_CHAT_SPACE") || "";
+const CHAT_SPACE = PropertiesService.getScriptProperties().getProperty("GOOGLE_CHAT_SPACE") || "spaces/AAQA6-sWthM";
 const ALLOWED_ADMINS = (PropertiesService.getScriptProperties().getProperty("ALLOWED_ADMINS") || "ariful40807@gmail.com,fatema0063@gmail.com").split(",").map(s => s.trim().toLowerCase()).filter(Boolean);
 
 function doGet() {
@@ -45,7 +45,7 @@ function sendVisitorMessageToChat_(body) {
   };
 
   const token = getGoogleAccessToken_("https://www.googleapis.com/auth/chat.bot");
-  const url = "https://chat.googleapis.com/v1/" + CHAT_SPACE + "/messages";
+  const url = "https://chat.googleapis.com/v1/" + CHAT_SPACE + "/messages?messageReplyOption=REPLY_MESSAGE_FALLBACK_TO_NEW_THREAD";
   const response = UrlFetchApp.fetch(url,{
     method:"post",
     contentType:"application/json",
