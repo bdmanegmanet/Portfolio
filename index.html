@@ -21,373 +21,39 @@ section{padding:100px 0}.section-head{display:flex;justify-content:space-between
 .projects{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.project{border:1px solid var(--line);border-radius:20px;padding:24px;background:var(--panel);min-height:255px;display:flex;flex-direction:column}.project .num{color:var(--accent);font-size:.72rem;font-weight:800}.project h3{font-family:"Space Grotesk","Noto Sans Bengali";font-size:1.28rem;margin:22px 0 9px}.project p{color:var(--muted);font-size:.86rem}.project a{margin-top:auto;color:var(--accent);font-size:.83rem;font-weight:700}
 .timeline{display:grid;gap:12px}.edu{padding:20px 22px;border:1px solid var(--line);border-radius:16px;background:var(--panel)}.edu strong{display:block;font-size:1rem}.edu span{color:var(--muted);font-size:.83rem}
 .contact{border:1px solid var(--line);border-radius:28px;padding:52px;background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 10%,var(--panel)),color-mix(in srgb,var(--accent2) 8%,var(--panel)))}.contact h2{font-family:"Space Grotesk","Noto Sans Bengali";font-size:clamp(2.3rem,5vw,4.3rem);line-height:1.05;max-width:760px}.contact p{color:var(--muted);margin:18px 0 25px;max-width:680px}.links{display:flex;gap:10px;flex-wrap:wrap}.chip{padding:10px 14px;border:1px solid var(--line);border-radius:12px;background:var(--panel);font-size:.82rem;font-weight:700}.chip:hover{border-color:var(--accent)}
-footer{padding:34px 0;border-top:1px solid var(--line);color:var(--muted);font-size:.78rem;display:flex;justify-content:space-between;gap:20px}
-.lang-bn{display:inline}.lang-en{display:none}.en .lang-bn{display:none}.en .lang-en{display:inline}
+footer{padding:34px 0;border-top:1px solid var(--line);color:var(--muted);font-size:.78rem;display:flex;justify-content:space-between;gap:20px}.lang-bn{display:inline}.lang-en{display:none}.en .lang-bn{display:none}.en .lang-en{display:inline}
 @media(max-width:850px){.navlinks{display:none}.menu{display:block}.nav-actions{margin-left:auto;margin-right:8px}.hero-grid,.about{grid-template-columns:1fr}.visual{max-width:560px;margin:auto}.skills{grid-template-columns:repeat(2,1fr)}.projects{grid-template-columns:1fr}.section-head{display:block}.section-head p{margin-top:13px}}
 @media(max-width:520px){.hero{min-height:auto;padding-top:125px}.skills{grid-template-columns:1fr}.avatar{width:220px;height:220px}.contact{padding:30px 22px}footer{display:block}footer span{display:block;margin-top:8px}.facts{grid-template-columns:1fr}}
-
-/* Firebase live chat */
-.chat-fab{position:fixed;right:20px;bottom:20px;z-index:50;width:58px;height:58px;border:0;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:24px;cursor:pointer;box-shadow:0 14px 35px rgba(0,0,0,.25)}
-.chat-window{position:fixed;right:20px;bottom:88px;z-index:49;width:min(370px,calc(100vw - 30px));height:520px;display:none;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);overflow:hidden}
-.chat-window.open{display:flex}.chat-head{padding:15px 16px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;display:flex;justify-content:space-between;align-items:center}.chat-head b{font-size:1rem}.chat-close{border:0;background:rgba(255,255,255,.16);color:#fff;border-radius:8px;padding:5px 9px;cursor:pointer}
-.chat-body{flex:1;overflow:auto;padding:14px;background:color-mix(in srgb,var(--bg) 88%,var(--panel))}.chat-msg{max-width:82%;padding:9px 11px;border-radius:13px;margin:7px 0;font-size:.82rem;word-break:break-word}.chat-msg.visitor{margin-left:auto;background:var(--accent);color:#fff;border-bottom-right-radius:4px}.chat-msg.admin{background:var(--panel);border:1px solid var(--line);border-bottom-left-radius:4px}.chat-msg small{display:block;opacity:.65;font-size:.64rem;margin-top:3px}.chat-start{padding:16px;border-bottom:1px solid var(--line)}.chat-start input,.chat-form textarea{width:100%;border:1px solid var(--line);background:var(--bg);color:var(--text);border-radius:10px;padding:10px;font:inherit;outline:none}.chat-start button{margin-top:8px;width:100%;border:0;border-radius:10px;padding:10px;background:var(--accent);color:#fff;font-weight:700;cursor:pointer}.chat-start button,.chat-form button{margin-top:8px;width:100%;border:0;border-radius:10px;padding:10px;background:var(--accent);color:#fff;font-weight:700;cursor:pointer}.chat-form{padding:10px;border-top:1px solid var(--line);display:flex;gap:7px}.chat-form textarea{resize:none;height:45px}.chat-form button{width:auto;margin:0;padding:0 14px}.chat-note{padding:12px;color:var(--muted);font-size:.76rem;text-align:center}
-@media(max-width:520px){.chat-window{right:10px;bottom:78px;width:calc(100vw - 20px);height:min(560px,calc(100vh - 100px))}.chat-fab{right:14px;bottom:14px}}
-
+.chat-fab{position:fixed;right:20px;bottom:20px;z-index:50;width:58px;height:58px;border:0;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:24px;cursor:pointer;box-shadow:0 14px 35px rgba(0,0,0,.25)}.chat-window{position:fixed;right:20px;bottom:88px;z-index:49;width:min(370px,calc(100vw - 30px));height:520px;display:none;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);overflow:hidden}.chat-window.open{display:flex}.chat-head{padding:15px 16px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;display:flex;justify-content:space-between;align-items:center}.chat-head b{font-size:1rem}.chat-close{border:0;background:rgba(255,255,255,.16);color:#fff;border-radius:8px;padding:5px 9px;cursor:pointer}.chat-body{flex:1;overflow:auto;padding:14px;background:color-mix(in srgb,var(--bg) 88%,var(--panel))}.chat-msg{max-width:82%;padding:9px 11px;border-radius:13px;margin:7px 0;font-size:.82rem;word-break:break-word}.chat-msg.visitor{margin-left:auto;background:var(--accent);color:#fff;border-bottom-right-radius:4px}.chat-msg.admin{background:var(--panel);border:1px solid var(--line);border-bottom-left-radius:4px}.chat-msg small{display:block;opacity:.65;font-size:.64rem;margin-top:3px}.chat-start{padding:16px;border-bottom:1px solid var(--line)}.chat-start input,.chat-form textarea{width:100%;border:1px solid var(--line);background:var(--bg);color:var(--text);border-radius:10px;padding:10px;font:inherit;outline:none}.chat-start button{margin-top:8px;width:100%;border:0;border-radius:10px;padding:10px;background:var(--accent);color:#fff;font-weight:700;cursor:pointer}.chat-form{padding:10px;border-top:1px solid var(--line);display:flex;gap:7px}.chat-form textarea{resize:none;height:45px}.chat-form button{width:auto;border:0;border-radius:10px;padding:0 14px;background:var(--accent);color:#fff;font-weight:700;cursor:pointer}.chat-note{padding:12px;color:var(--muted);font-size:.76rem;text-align:center}@media(max-width:520px){.chat-window{right:10px;bottom:78px;width:calc(100vw - 20px);height:min(560px,calc(100vh - 100px))}.chat-fab{right:14px;bottom:14px}}
 </style>
 </head>
 <body>
-<nav><div class="container nav">
-<a class="brand" href="#home">ARIFUL <span>ISLAM</span></a>
-<div class="navlinks"><a href="#about"><span class="lang-bn">সম্পর্কে</span><span class="lang-en">About</span></a><a href="#skills"><span class="lang-bn">দক্ষতা</span><span class="lang-en">Skills</span></a><a href="#education"><span class="lang-bn">শিক্ষা</span><span class="lang-en">Education</span></a><a href="#projects"><span class="lang-bn">প্রজেক্ট</span><span class="lang-en">Projects</span></a><a href="#contact"><span class="lang-bn">যোগাযোগ</span><span class="lang-en">Contact</span></a></div>
-<div class="nav-actions"><button class="tool" id="langBtn" title="Language">EN</button><button class="tool" id="themeBtn" title="Theme">☾</button><button class="menu" aria-label="Menu">☰</button></div>
-</div></nav>
-
+<nav><div class="container nav"><a class="brand" href="#home">ARIFUL <span>ISLAM</span></a><div class="navlinks"><a href="#about"><span class="lang-bn">সম্পর্কে</span><span class="lang-en">About</span></a><a href="#skills"><span class="lang-bn">দক্ষতা</span><span class="lang-en">Skills</span></a><a href="#education"><span class="lang-bn">শিক্ষা</span><span class="lang-en">Education</span></a><a href="#projects"><span class="lang-bn">প্রজেক্ট</span><span class="lang-en">Projects</span></a><a href="#contact"><span class="lang-bn">যোগাযোগ</span><span class="lang-en">Contact</span></a></div><div class="nav-actions"><button class="tool" id="langBtn" title="Language">EN</button><button class="tool" id="themeBtn" title="Theme">☾</button><button class="menu" aria-label="Menu">☰</button></div></div></nav>
 <main>
-<section class="hero" id="home"><div class="container hero-grid"><div>
-<div class="kicker"><span class="dot"></span><span class="lang-bn">ইলেকট্রনিক্স ইঞ্জিনিয়ারিং শিক্ষার্থী • Web Developer</span><span class="lang-en">Electronics Engineering Student • Web Developer</span></div>
-<h1><span class="lang-bn">মোঃ আরিফুল ইসলাম<br><em>ডিজিটালভাবে তৈরি করি।</em></span><span class="lang-en">MD. ARIFUL ISLAM<br><em>Build. Learn. Create.</em></span></h1>
-<p><span class="lang-bn">আমি কুড়িগ্রাম পলিটেকনিক ইনস্টিটিউটে ডিপ্লোমা ইন ইলেকট্রনিক্স ইঞ্জিনিয়ারিং অধ্যয়নরত। ওয়েব ডেভেলপমেন্ট, অটোমেশন ও আধুনিক ডিজিটাল সমাধান নিয়ে কাজ করতে ভালোবাসি।</span><span class="lang-en">I am pursuing a Diploma in Electronics Engineering at Kurigram Government Polytechnic Institute. I enjoy web development, automation and building practical digital solutions.</span></p>
-<div class="actions"><a class="btn primary" href="#projects"><span class="lang-bn">আমার প্রজেক্ট ↗</span><span class="lang-en">View Projects ↗</span></a><a class="btn" href="#contact"><span class="lang-bn">যোগাযোগ করুন</span><span class="lang-en">Let's Connect</span></a></div>
-</div>
-<div class="visual"><div class="card"><div class="avatar"><img src="https://lh3.googleusercontent.com/d/13fhFXRKRGTBJQyxEzKQPZoMc293R32tX" alt="মোঃ আরিফুল ইসলাম" loading="eager"></div><div class="profile-name">মোঃ আরিফুল ইসলাম</div><div class="profile-role">Diploma in Electronics Engineering</div><div class="mini"><span>📍 <strong>Nilphamari, Bangladesh</strong></span><span>GitHub <strong>@bdmanegmanet</strong></span></div></div></div>
-</div></section>
-
-<section id="about"><div class="container"><div class="section-head"><div><div class="eyebrow">01 — About</div><h2><span class="lang-bn">আমার সম্পর্কে</span><span class="lang-en">About Me</span></h2></div><p><span class="lang-bn">শিক্ষা, প্রযুক্তি ও বাস্তব সমস্যার ডিজিটাল সমাধান—এই তিনটি ক্ষেত্রকে একসাথে এগিয়ে নিতে চাই।</span><span class="lang-en">I combine education, technology and practical problem-solving to create useful digital experiences.</span></p></div>
-<div class="about"><div><p><span class="lang-bn">আমি মোঃ আরিফুল ইসলাম। বর্তমানে কুড়িগ্রাম পলিটেকনিক ইনস্টিটিউটে ডিপ্লোমা ইন ইলেকট্রনিক্স ইঞ্জিনিয়ারিং করছি। পড়াশোনার পাশাপাশি ওয়েবসাইট তৈরি, UI design, GitHub-based development এবং বিভিন্ন cloud deployment platform নিয়ে কাজ করছি।</span><span class="lang-en">I am MD. Ariful Islam, currently studying Diploma in Electronics Engineering at Kurigram Government Polytechnic Institute. Alongside my studies, I work with website development, UI design, GitHub-based workflows and modern cloud deployment platforms.</span></p>
-<p><span class="lang-bn">আমি নতুন প্রযুক্তি শেখা, নিজের আইডিয়াকে বাস্তব প্রজেক্টে রূপ দেওয়া এবং মানুষের কাজে লাগে এমন ডিজিটাল প্ল্যাটফর্ম তৈরি করতে আগ্রহী।</span><span class="lang-en">I enjoy learning new technologies, turning ideas into real projects and creating digital platforms that are genuinely useful.</span></p></div>
-<div class="facts"><div class="fact"><b>Electronics</b><span><span class="lang-bn">ডিপ্লোমা ইঞ্জিনিয়ারিং</span><span class="lang-en">Diploma Engineering</span></span></div><div class="fact"><b>Web</b><span><span class="lang-bn">Development & Design</span><span class="lang-en">Development & Design</span></span></div><div class="fact"><b>PLC</b><span><span class="lang-bn">Automation & Control</span><span class="lang-en">Automation & Control</span></span></div><div class="fact"><b>GitHub</b><span><span class="lang-bn">Code & Deployment</span><span class="lang-en">Code & Deployment</span></span></div></div></div></div></section>
-
-<section id="skills"><div class="container"><div class="section-head"><div><div class="eyebrow">02 — Skills</div><h2><span class="lang-bn">আমার দক্ষতা</span><span class="lang-en">What I Work With</span></h2></div></div><div class="skills">
-<div class="skill"><div class="icon">⌘</div><h3>HTML • CSS • JavaScript</h3><p><span class="lang-bn">Responsive ও modern website development.</span><span class="lang-en">Responsive and modern website development.</span></p></div>
-<div class="skill"><div class="icon">◈</div><h3>Google Apps Script</h3><p><span class="lang-bn">Google Sheets database ও Web App API ভিত্তিক সমাধান।</span><span class="lang-en">Apps Script, Sheets database and Web App API solutions.</span></p></div>
-<div class="skill"><div class="icon">⚡</div><h3>Git & GitHub</h3><p><span class="lang-bn">Version control, repository workflow ও deployment.</span><span class="lang-en">Version control, repository workflows and deployment.</span></p></div>
-<div class="skill"><div class="icon">⚙</div><h3>PLC & Automation</h3><p><span class="lang-bn">WPLSoft, ladder logic, control ও industrial automation.</span><span class="lang-en">WPLSoft, ladder logic, control and industrial automation.</span></p></div>
-<div class="skill"><div class="icon">☁</div><h3>Cloud Deployment</h3><p>Render, Netlify, Cloudflare Pages <span class="lang-bn">ও অন্যান্য hosting workflow.</span><span class="lang-en">and modern hosting workflows.</span></p></div>
-<div class="skill"><div class="icon">🎨</div><h3>Canva & UI Design</h3><p><span class="lang-bn">Web visuals, posters, social graphics ও branding.</span><span class="lang-en">Web visuals, posters, social graphics and branding.</span></p></div>
-<div class="skill"><div class="icon">📊</div><h3>Google Docs & Sheets</h3><p><span class="lang-bn">Documentation, data management ও office workflows.</span><span class="lang-en">Documentation, data management and office workflows.</span></p></div>
-<div class="skill"><div class="icon">🤖</div><h3>AI Tools</h3><p><span class="lang-bn">Google AI Studio ও AI-assisted development workflow.</span><span class="lang-en">Google AI Studio and AI-assisted development workflows.</span></p></div>
-</div></div></section>
-
-<section id="education"><div class="container"><div class="section-head"><div><div class="eyebrow">03 — Education</div><h2><span class="lang-bn">শিক্ষাজীবন</span><span class="lang-en">Education</span></h2></div></div><div class="timeline">
-<div class="edu"><strong>Diploma in Engineering — Electronics Technology</strong><span><span class="lang-bn">কুড়িগ্রাম সরকারি পলিটেকনিক ইনস্টিটিউট • বর্তমানে অধ্যয়নরত</span><span class="lang-en">Kurigram Government Polytechnic Institute • Currently studying</span></span></div>
-<div class="edu"><strong>Secondary School Certificate (SSC)</strong><span><span class="lang-bn">নীলফামারী সরকারি টেকনিক্যাল স্কুল ও কলেজ</span><span class="lang-en">Nilphamari Government Technical School & College</span></span></div>
-</div></div></section>
-
-<section id="projects"><div class="container"><div class="section-head"><div><div class="eyebrow">04 — Projects</div><h2><span class="lang-bn">নির্বাচিত কাজ</span><span class="lang-en">Selected Work</span></h2></div><p><span class="lang-bn">বাস্তব কাজ ও শেখার প্রজেক্ট থেকে তৈরি কিছু ডিজিটাল প্ল্যাটফর্ম।</span><span class="lang-en">Digital platforms built through real work and continuous learning.</span></p></div><div class="projects">
-<article class="project"><span class="num">PROJECT 01</span><h3>Polytechnic Tutor Home</h3><p><span class="lang-bn">পলিটেকনিক শিক্ষার্থীদের জন্য course, notice, video, admission ও admin management ভিত্তিক educational platform.</span><span class="lang-en">An educational platform with courses, notices, videos, admission and admin management.</span></p><a href="https://polytechnictutorhome.netlify.app/" target="_blank" rel="noopener">Live Website ↗</a></article>
-<article class="project"><span class="num">PROJECT 02</span><h3>SPDC Info</h3><p><span class="lang-bn">কমিউনিটি ও দাওয়াহ তথ্য প্রকাশের জন্য responsive information website.</span><span class="lang-en">A responsive information website for community and Dawah content.</span></p><a href="https://spdcinfo.netlify.app/" target="_blank" rel="noopener">Live Website ↗</a></article>
-<article class="project"><span class="num">PROJECT 03</span><h3>Muslim Ummah Foundation</h3><p><span class="lang-bn">সামাজিক সেবা, দাওয়াহ ও মানবকল্যাণভিত্তিক ডিজিটাল প্ল্যাটফর্মের পরিকল্পনা ও development workflow.</span><span class="lang-en">A digital platform concept for Dawah, social service and humanitarian work.</span></p><a href="https://github.com/bdmanegmanet" target="_blank" rel="noopener">GitHub ↗</a></article>
-</div></div></section>
-
-<section id="contact"><div class="container"><div class="contact"><div class="eyebrow">05 — Contact</div><h2><span class="lang-bn">একটি আইডিয়া আছে?<br>চলুন তৈরি করি।</span><span class="lang-en">Have an idea?<br>Let's build it.</span></h2><p><span class="lang-bn">প্রজেক্ট, collaboration, web development বা technology নিয়ে যোগাযোগ করতে পারেন। Gmail/Google Chat ব্যবহার করলে Google Chat খুলে আমার Gmail <strong>ariful40807@gmail.com</strong> দিয়ে আমাকে খুঁজে সরাসরি মেসেজ করতে পারবেন।</span><span class="lang-en">For projects, collaboration, web development or technology-related work, feel free to connect. On Google Chat, search for my Gmail <strong>ariful40807@gmail.com</strong> and send me a direct message.</span></p><div class="links">
-<a class="chip" href="https://github.com/bdmanegmanet" target="_blank" rel="noopener">GitHub</a>
-<a class="chip" href="https://www.facebook.com/mdarifulislam15" target="_blank" rel="noopener">Facebook</a>
-<a class="chip" href="https://chat.google.com/" target="_blank" rel="noopener">💬 Google Chat</a>
-<a class="chip" href="mailto:ariful40807@gmail.com">Email</a>
-<a class="chip" href="tel:+8801862240807">+880 1862-240807</a>
-</div></div></div></section>
-
-<button class="chat-fab" id="chatFab" aria-label="Live Chat" title="Live Chat">💬</button>
-<div class="chat-window" id="chatWindow">
-  <div class="chat-head"><b>💬 Live Chat</b><div style="display:flex;gap:6px"><a href="login.html" style="color:#fff;font-size:.75rem;padding:6px 8px;background:rgba(255,255,255,.14);border-radius:8px">Login</a><button class="chat-close" id="chatClose">✕</button></div></div>
-  <div class="chat-body" id="chatBody"></div>
-  <div class="chat-form" id="chatForm" style="display:none">
-    <textarea id="chatInput" placeholder="আপনার মেসেজ লিখুন..."></textarea>
-    <button id="chatSend">➤</button>
-  </div>
-</div>
-
-</main>
-<footer class="container"><span>© <span id="year"></span> MD. ARIFUL ISLAM</span><span><span class="lang-bn">Built with HTML • CSS • JavaScript</span><span class="lang-en">Built with HTML • CSS • JavaScript</span></span></footer>
+<section class="hero" id="home"><div class="container hero-grid"><div><div class="kicker"><span class="dot"></span><span class="lang-bn">ইলেকট্রনিক্স ইঞ্জিনিয়ারিং শিক্ষার্থী • Web Developer</span><span class="lang-en">Electronics Engineering Student • Web Developer</span></div><h1><span class="lang-bn">মোঃ আরিফুল ইসলাম<br><em>ডিজিটালভাবে তৈরি করি।</em></span><span class="lang-en">MD. ARIFUL ISLAM<br><em>Build. Learn. Create.</em></span></h1><p><span class="lang-bn">আমি কুড়িগ্রাম পলিটেকনিক ইনস্টিটিউটে ডিপ্লোমা ইন ইলেকট্রনিক্স ইঞ্জিনিয়ারিং অধ্যয়নরত। ওয়েব ডেভেলপমেন্ট, অটোমেশন ও আধুনিক ডিজিটাল সমাধান নিয়ে কাজ করতে ভালোবাসি।</span><span class="lang-en">I am pursuing a Diploma in Electronics Engineering at Kurigram Government Polytechnic Institute. I enjoy web development, automation and building practical digital solutions.</span></p><div class="actions"><a class="btn primary" href="#projects"><span class="lang-bn">আমার প্রজেক্ট ↗</span><span class="lang-en">View Projects ↗</span></a><a class="btn" href="#contact"><span class="lang-bn">যোগাযোগ করুন</span><span class="lang-en">Let's Connect</span></a></div></div><div class="visual"><div class="card"><div class="avatar"><img src="https://lh3.googleusercontent.com/d/13fhFXRKRGTBJQyxEzKQPZoMc293R32tX" alt="মোঃ আরিফুল ইসলাম" loading="eager"></div><div class="profile-name">মোঃ আরিফুল ইসলাম</div><div class="profile-role">Diploma in Electronics Engineering</div><div class="mini"><span>📍 <strong>Nilphamari, Bangladesh</strong></span><span>GitHub <strong>@bdmanegmanet</strong></span></div></div></div></div></section>
+<section id="about"><div class="container"><div class="section-head"><div><div class="eyebrow">01 — About</div><h2><span class="lang-bn">আমার সম্পর্কে</span><span class="lang-en">About Me</span></h2></div><p><span class="lang-bn">শিক্ষা, প্রযুক্তি ও বাস্তব সমস্যার ডিজিটাল সমাধান—এই তিনটি ক্ষেত্রকে একসাথে এগিয়ে নিতে চাই।</span><span class="lang-en">I combine education, technology and practical problem-solving to create useful digital experiences.</span></p></div><div class="about"><div><p><span class="lang-bn">আমি মোঃ আরিফুল ইসলাম। বর্তমানে কুড়িগ্রাম পলিটেকনিক ইনস্টিটিউটে ডিপ্লোমা ইন ইলেকট্রনিক্স ইঞ্জিনিয়ারিং করছি। পড়াশোনার পাশাপাশি ওয়েবসাইট তৈরি, UI design, GitHub-based development এবং বিভিন্ন cloud deployment platform নিয়ে কাজ করছি।</span><span class="lang-en">I am MD. Ariful Islam, currently studying Diploma in Electronics Engineering at Kurigram Government Polytechnic Institute. Alongside my studies, I work with website development, UI design, GitHub-based workflows and modern cloud deployment platforms.</span></p><p><span class="lang-bn">আমি নতুন প্রযুক্তি শেখা, নিজের আইডিয়াকে বাস্তব প্রজেক্টে রূপ দেওয়া এবং মানুষের কাজে লাগে এমন ডিজিটাল প্ল্যাটফর্ম তৈরি করতে আগ্রহী।</span><span class="lang-en">I enjoy learning new technologies, turning ideas into real projects and creating digital platforms that are genuinely useful.</span></p></div><div class="facts"><div class="fact"><b>Electronics</b><span><span class="lang-bn">ডিপ্লোমা ইঞ্জিনিয়ারিং</span><span class="lang-en">Diploma Engineering</span></span></div><div class="fact"><b>Web</b><span>Development & Design</span></div><div class="fact"><b>PLC</b><span>Automation & Control</span></div><div class="fact"><b>GitHub</b><span>Code & Deployment</span></div></div></div></div></section>
+<section id="skills"><div class="container"><div class="section-head"><div><div class="eyebrow">02 — Skills</div><h2><span class="lang-bn">আমার দক্ষতা</span><span class="lang-en">What I Work With</span></h2></div></div><div class="skills"><div class="skill"><div class="icon">⌘</div><h3>HTML • CSS • JavaScript</h3><p><span class="lang-bn">Responsive ও modern website development.</span><span class="lang-en">Responsive and modern website development.</span></p></div><div class="skill"><div class="icon">◈</div><h3>Google Apps Script</h3><p><span class="lang-bn">Google Sheets database ও Web App API ভিত্তিক সমাধান।</span><span class="lang-en">Apps Script, Sheets database and Web App API solutions.</span></p></div><div class="skill"><div class="icon">⚡</div><h3>Git & GitHub</h3><p><span class="lang-bn">Version control, repository workflow ও deployment.</span><span class="lang-en">Version control, repository workflows and deployment.</span></p></div><div class="skill"><div class="icon">⚙</div><h3>PLC & Automation</h3><p><span class="lang-bn">WPLSoft, ladder logic, control ও industrial automation.</span><span class="lang-en">WPLSoft, ladder logic, control and industrial automation.</span></p></div><div class="skill"><div class="icon">☁</div><h3>Cloud Deployment</h3><p>Render, Netlify, Cloudflare Pages <span class="lang-bn">ও অন্যান্য hosting workflow.</span><span class="lang-en">and modern hosting workflows.</span></p></div><div class="skill"><div class="icon">🎨</div><h3>Canva & UI Design</h3><p><span class="lang-bn">Web visuals, posters, social graphics ও branding.</span><span class="lang-en">Web visuals, posters, social graphics and branding.</span></p></div><div class="skill"><div class="icon">📊</div><h3>Google Docs & Sheets</h3><p><span class="lang-bn">Documentation, data management ও office workflows.</span><span class="lang-en">Documentation, data management and office workflows.</span></p></div><div class="skill"><div class="icon">🤖</div><h3>AI Tools</h3><p><span class="lang-bn">Google AI Studio ও AI-assisted development workflow.</span><span class="lang-en">Google AI Studio and AI-assisted development workflows.</span></p></div></div></div></section>
+<section id="education"><div class="container"><div class="section-head"><div><div class="eyebrow">03 — Education</div><h2><span class="lang-bn">শিক্ষাজীবন</span><span class="lang-en">Education</span></h2></div></div><div class="timeline"><div class="edu"><strong>Diploma in Engineering — Electronics Technology</strong><span><span class="lang-bn">কুড়িগ্রাম সরকারি পলিটেকনিক ইনস্টিটিউট • বর্তমানে অধ্যয়নরত</span><span class="lang-en">Kurigram Government Polytechnic Institute • Currently studying</span></span></div><div class="edu"><strong>Secondary School Certificate (SSC)</strong><span><span class="lang-bn">নীলফামারী সরকারি টেকনিক্যাল স্কুল ও কলেজ</span><span class="lang-en">Nilphamari Government Technical School & College</span></span></div></div></div></section>
+<section id="projects"><div class="container"><div class="section-head"><div><div class="eyebrow">04 — Projects</div><h2><span class="lang-bn">নির্বাচিত কাজ</span><span class="lang-en">Selected Work</span></h2></div><p><span class="lang-bn">বাস্তব কাজ ও শেখার প্রজেক্ট থেকে তৈরি কিছু ডিজিটাল প্ল্যাটফর্ম।</span><span class="lang-en">Digital platforms built through real work and continuous learning.</span></p></div><div class="projects"><article class="project"><span class="num">PROJECT 01</span><h3>Polytechnic Tutor Home</h3><p><span class="lang-bn">পলিটেকনিক শিক্ষার্থীদের জন্য course, notice, video, admission ও admin management ভিত্তিক educational platform.</span><span class="lang-en">An educational platform with courses, notices, videos, admission and admin management.</span></p><a href="https://polytechnictutorhome.netlify.app/" target="_blank" rel="noopener">Live Website ↗</a></article><article class="project"><span class="num">PROJECT 02</span><h3>SPDC Info</h3><p><span class="lang-bn">কমিউনিটি ও দাওয়াহ তথ্য প্রকাশের জন্য responsive information website.</span><span class="lang-en">A responsive information website for community and Dawah content.</span></p><a href="https://spdcinfo.netlify.app/" target="_blank" rel="noopener">Live Website ↗</a></article><article class="project"><span class="num">PROJECT 03</span><h3>Muslim Ummah Foundation</h3><p><span class="lang-bn">সামাজিক সেবা, দাওয়াহ ও মানবকল্যাণভিত্তিক ডিজিটাল প্ল্যাটফর্মের পরিকল্পনা ও development workflow.</span><span class="lang-en">A digital platform concept for Dawah, social service and humanitarian work.</span></p><a href="https://github.com/bdmanegmanet" target="_blank" rel="noopener">GitHub ↗</a></article></div></div></section>
+<section id="contact"><div class="container"><div class="contact"><div class="eyebrow">05 — Contact</div><h2><span class="lang-bn">একটি আইডিয়া আছে?<br>চলুন তৈরি করি।</span><span class="lang-en">Have an idea?<br>Let's build it.</span></h2><p><span class="lang-bn">প্রজেক্ট, collaboration, web development বা technology নিয়ে যোগাযোগ করতে পারেন। Gmail/Google Chat ব্যবহার করলে Google Chat খুলে আমার Gmail <strong>ariful40807@gmail.com</strong> দিয়ে আমাকে খুঁজে সরাসরি মেসেজ করতে পারবেন।</span><span class="lang-en">For projects, collaboration, web development or technology-related work, feel free to connect. On Google Chat, search for my Gmail <strong>ariful40807@gmail.com</strong> and send me a direct message.</span></p><div class="links"><a class="chip" href="https://github.com/bdmanegmanet" target="_blank" rel="noopener">GitHub</a><a class="chip" href="https://www.facebook.com/mdarifulislam15" target="_blank" rel="noopener">Facebook</a><a class="chip" href="https://chat.google.com/" target="_blank" rel="noopener">💬 Google Chat</a><a class="chip" href="mailto:ariful40807@gmail.com">Email</a><a class="chip" href="tel:+8801862240807">+880 1862-240807</a></div></div></div></section>
+<button class="chat-fab" id="chatFab" aria-label="Live Chat" title="Live Chat">💬</button><div class="chat-window" id="chatWindow"><div class="chat-head"><b>💬 Live Chat</b><div style="display:flex;gap:6px"><a href="login.html" style="color:#fff;font-size:.75rem;padding:6px 8px;background:rgba(255,255,255,.14);border-radius:8px">Login</a><button class="chat-close" id="chatClose">✕</button></div></div><div class="chat-body" id="chatBody"></div><div class="chat-form" id="chatForm" style="display:none"><textarea id="chatInput" placeholder="আপনার মেসেজ লিখুন..."></textarea><button id="chatSend">➤</button></div></div>
+</main><footer class="container"><span>© <span id="year"></span> MD. ARIFUL ISLAM</span><span><span class="lang-bn">Built with HTML • CSS • JavaScript</span><span class="lang-en">Built with HTML • CSS • JavaScript</span></span></footer>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, signOut } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyDQlOU5V2JwOOII-89IfwqTeGWhiJLMW8Y",
-  authDomain: "live-chat-5fb87.firebaseapp.com",
-  projectId: "live-chat-5fb87",
-  storageBucket: "live-chat-5fb87.firebasestorage.app",
-  messagingSenderId: "981108059379",
-  appId: "1:981108059379:web:0172685d73f066d02adb86",
-  measurementId: "G-6992KVEVPG"
-};
-
-const root = document.documentElement;
-const body = document.body;
-const themeBtn = document.getElementById("themeBtn");
-const langBtn = document.getElementById("langBtn");
-const savedTheme = localStorage.getItem("theme");
-if (savedTheme) root.dataset.theme = savedTheme;
-function syncTheme() {
-  themeBtn.textContent = root.dataset.theme === "dark" ? "☀" : "☾";
-}
-syncTheme();
-themeBtn.onclick = () => {
-  const dark = root.dataset.theme === "dark";
-  root.dataset.theme = dark ? "light" : "dark";
-  localStorage.setItem("theme", root.dataset.theme);
-  syncTheme();
-};
-let lang = localStorage.getItem("lang") || "bn";
-function syncLang() {
-  body.classList.toggle("en", lang === "en");
-  langBtn.textContent = lang === "bn" ? "EN" : "বাংলা";
-  document.documentElement.lang = lang;
-}
-syncLang();
-langBtn.onclick = () => {
-  lang = lang === "bn" ? "en" : "bn";
-  localStorage.setItem("lang", lang);
-  syncLang();
-};
-document.getElementById("year").textContent = new Date().getFullYear();
-
-const fab = document.getElementById("chatFab");
-const win = document.getElementById("chatWindow");
-const close = document.getElementById("chatClose");
-const chatBody = document.getElementById("chatBody");
-const form = document.getElementById("chatForm");
-const input = document.getElementById("chatInput");
-const send = document.getElementById("chatSend");
-
-let chatId = localStorage.getItem("portfolio_chat_id_v2");
-let visitorName = localStorage.getItem("portfolio_chat_name_v2") || "";
-let unsubscribe = null;
-let visitorUid = null;
-let visitorEmail = localStorage.getItem("portfolio_chat_email_v3") || "";
-let firebaseReady = false;
-let currentUser = null;
-let db = null;
-let auth = null;
-
-// Optional Google Chat bridge. Leave empty until the Apps Script web app is deployed.
-const GOOGLE_CHAT_BRIDGE_URL = "https://script.google.com/macros/s/AKfycbzaki2R-wT1zHHRO8AKQmUlIpM2vKwjqXSA2s7o0BXWinsk78vdNkLTTmzb75yhRJPljQ/exec";
-async function notifyGoogleChatBridge(payload) {
-  if (!GOOGLE_CHAT_BRIDGE_URL) return;
-  try {
-    await fetch(GOOGLE_CHAT_BRIDGE_URL, {
-      method: "POST",
-      headers: {"Content-Type":"text/plain;charset=utf-8"},
-      body: JSON.stringify(payload),
-      mode: "no-cors",
-      keepalive: true
-    });
-  } catch (e) {
-    console.warn("Google Chat bridge notification failed:", e);
-  }
-}
-
-function esc(s) {
-  return String(s).replace(/[&<>"']/g, m => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"
-  }[m]));
-}
-function showChatMessage(text) {
-  chatBody.innerHTML = '<div class="chat-note">' + esc(text) + '</div>';
-}
-function showStart() {
-  form.style.display = "none";
-  if (!currentUser) {
-    chatBody.innerHTML = '<div class="chat-start"><b>🔐 Sign up / Login করুন</b><p class="chat-note">চ্যাট করার আগে আপনার account তৈরি করে Login করতে হবে।</p><div style="display:grid;gap:8px"><a class="btn primary" style="text-align:center" href="signup.html">Create Account</a><a class="btn" style="text-align:center" href="login.html">Login</a><button id="googleLogin" class="btn">Continue with Google</button></div></div>';
-    document.getElementById("googleLogin").onclick = loginWithGoogle;
-    return;
-  }
-  chatBody.innerHTML = '<div class="chat-start"><b>চ্যাট শুরু করুন</b><p class="chat-note">Signed in as: <strong>' + esc(currentUser.email || "") + '</strong></p><input id="visitorName" placeholder="আপনার নাম" maxlength="60" value="' + esc(currentUser.displayName || visitorName || "") + '"><button id="startChat">Start Chat</button><button id="logoutChat" class="btn" style="background:transparent;color:var(--text);border:1px solid var(--line)">Logout</button></div>';
-  document.getElementById("startChat").onclick = startChat;
-  document.getElementById("logoutChat").onclick = async () => { await signOut(auth); chatId=null; visitorName=""; localStorage.removeItem("portfolio_chat_id_v2"); localStorage.removeItem("portfolio_chat_name_v2"); };
-}
-async function initFirebase() {
-  try {
-    const app = initializeApp(firebaseConfig);
-    db = getFirestore(app);
-    auth = getAuth(app);
-    firebaseReady = true;
-    onAuthStateChanged(auth, user => {
-      currentUser = user;
-      visitorUid = user?.uid || null;
-      visitorEmail = user?.email || "";
-      if (visitorEmail) localStorage.setItem("portfolio_chat_email_v3", visitorEmail);
-
-      if (!user) {
-        // A chat ID from an older anonymous/signed-out session must not be reused.
-        if (unsubscribe) {
-          unsubscribe();
-          unsubscribe = null;
-        }
-        form.style.display = "none";
-        chatId = null;
-        visitorName = "";
-        localStorage.removeItem("portfolio_chat_id_v2");
-        localStorage.removeItem("portfolio_chat_name_v2");
-        showStart();
-        return;
-      }
-
-      if (chatId) {
-        form.style.display = "flex";
-        startListener();
-      } else {
-        showStart();
-      }
-    });
-  } catch (error) {
-    console.error("Firebase chat initialization failed:", error);
-    firebaseReady = false;
-    showChatMessage("Live Chat এখন সংযোগ করতে পারছে না। কিছুক্ষণ পরে আবার চেষ্টা করুন।");
-  }
-}
-async function loginWithGoogle() {
-  try {
-    const provider = new GoogleAuthProvider();
-    await signInWithPopup(auth, provider);
-  } catch (error) {
-    console.error("Google login failed:", error);
-    showChatMessage("Google Login সম্পন্ন হয়নি। আবার চেষ্টা করুন।");
-  }
-}
-
-async function loginWithEmail(email, password) {
-  return signInWithEmailAndPassword(auth, email, password);
-}
-
-async function signupWithEmail(name, email, password) {
-  const cred = await createUserWithEmailAndPassword(auth, email, password);
-  if (name) await updateProfile(cred.user, {displayName: name});
-  return cred;
-}
-async function startChat() {
-  const nameInput = document.getElementById("visitorName");
-  const n = nameInput?.value.trim();
-  if (!currentUser || !visitorUid || !currentUser.email) {
-    showStart();
-    return;
-  }
-  if (!n) {
-    nameInput?.focus();
-    return;
-  }
-  if (!firebaseReady || !visitorUid || !db) {
-    showChatMessage("Chat service প্রস্তুত হচ্ছে। আবার চেষ্টা করুন।");
-    return;
-  }
-  try {
-    visitorName = n;
-    const ref = doc(collection(db, "chats"));
-    chatId = ref.id;
-    await setDoc(ref, {
-      visitorName: n,
-      visitorEmail: currentUser.email,
-      ownerUid: visitorUid,
-      createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp(),
-      status: "open",
-      lastSender: "visitor"
-    });
-    localStorage.setItem("portfolio_chat_id_v2", chatId);
-    localStorage.setItem("portfolio_chat_name_v2", visitorName);
-    form.style.display = "flex";
-    startListener();
-  } catch (error) {
-    console.error("Could not create chat:", error);
-    showChatMessage("Chat শুরু করা যাচ্ছে না। Firebase Firestore permission/database settings পরীক্ষা করুন।");
-  }
-}
-function startListener() {
-  if (!db || !chatId) return;
-  if (unsubscribe) unsubscribe();
-  const q = query(collection(db, "chats", chatId, "messages"), orderBy("createdAt", "asc"));
-  unsubscribe = onSnapshot(q, snap => {
-    chatBody.innerHTML = "";
-    if (snap.empty) {
-      showChatMessage("আপনার মেসেজ লিখুন। আমি যত দ্রুত সম্ভব উত্তর দেব।");
-    }
-    snap.forEach(d => {
-      const m = d.data();
-      const who = m.sender === "admin" ? "admin" : "visitor";
-      const t = m.createdAt?.toDate ? m.createdAt.toDate().toLocaleString("bn-BD") : "";
-      chatBody.insertAdjacentHTML("beforeend",
-        '<div class="chat-msg ' + who + '">' + esc(m.text || "") +
-        '<small>' + (who === "admin" ? "Admin" : esc(visitorName || "আপনি")) + " · " + t + "</small></div>"
-      );
-    });
-    chatBody.scrollTop = chatBody.scrollHeight;
-  }, error => {
-    console.error("Chat listener error:", error);
-    showChatMessage("Chat data পাওয়া যাচ্ছে না। Firestore Security Rules বা Database setup পরীক্ষা করুন।");
-  });
-}
-async function sendMessage() {
-  const text = input.value.trim();
-  if (!text || !chatId || !firebaseReady) return;
-  input.value = "";
-  try {
-    await addDoc(collection(db, "chats", chatId, "messages"), {
-      text,
-      sender: "visitor",
-      senderName: visitorName || currentUser?.displayName || "Visitor",
-      senderEmail: currentUser?.email || visitorEmail || "",
-      createdAt: serverTimestamp()
-    });
-    await setDoc(doc(db, "chats", chatId), {
-      updatedAt: serverTimestamp(),
-      status: "open",
-      lastSender: "visitor"
-    }, {merge:true});
-    await notifyGoogleChatBridge({
-      action: "visitor_message",
-      chatId,
-      visitorName: visitorName || currentUser?.displayName || "Visitor",
-      visitorEmail: currentUser?.email || visitorEmail || "",
-      text,
-      sentAt: new Date().toISOString()
-    });
-  } catch (error) {
-    console.error("Message send failed:", error);
-    showChatMessage("মেসেজ পাঠানো যায়নি। Firestore permission পরীক্ষা করুন।");
-    input.value = text;
-  }
-}
-send.onclick = sendMessage;
-input.addEventListener("keydown", e => {
-  if (e.key === "Enter" && !e.shiftKey) {
-    e.preventDefault();
-    sendMessage();
-  }
-});
-fab.onclick = () => {
-  const opening = !win.classList.contains("open");
-  win.classList.toggle("open", opening);
-  if (!opening) return;
-
-  if (!firebaseReady) {
-    showChatMessage("Live Chat সংযোগ হচ্ছে...");
-    return;
-  }
-
-  // Never open a Firestore listener for a cached chat when the visitor is signed out.
-  // This prevents stale/anonymous chat IDs from causing a Firestore permission error.
-  if (!currentUser || !visitorUid) {
-    form.style.display = "none";
-    showStart();
-    return;
-  }
-
-  if (chatId) {
-    form.style.display = "flex";
-    startListener();
-  } else {
-    showStart();
-    if (visitorName) {
-      const field = document.getElementById("visitorName");
-      if (field) field.value = visitorName;
-    }
-  }
-};
-close.onclick = () => win.classList.remove("open");
-
-initFirebase();
+const firebaseConfig={apiKey:"AIzaSyDQlOU5V2JwOOII-89IfwqTeGWhiJLMW8Y",authDomain:"live-chat-5fb87.firebaseapp.com",projectId:"live-chat-5fb87",storageBucket:"live-chat-5fb87.firebasestorage.app",messagingSenderId:"981108059379",appId:"1:981108059379:web:0172685d73f066d02adb86",measurementId:"G-6992KVEVPG"};
+const root=document.documentElement,body=document.body,themeBtn=document.getElementById("themeBtn"),langBtn=document.getElementById("langBtn");const savedTheme=localStorage.getItem("theme");if(savedTheme)root.dataset.theme=savedTheme;function syncTheme(){themeBtn.textContent=root.dataset.theme==="dark"?"☀":"☾"}syncTheme();themeBtn.onclick=()=>{const dark=root.dataset.theme==="dark";root.dataset.theme=dark?"light":"dark";localStorage.setItem("theme",root.dataset.theme);syncTheme()};let lang=localStorage.getItem("lang")||"bn";function syncLang(){body.classList.toggle("en",lang==="en");langBtn.textContent=lang==="bn"?"EN":"বাংলা";document.documentElement.lang=lang}syncLang();langBtn.onclick=()=>{lang=lang==="bn"?"en":"bn";localStorage.setItem("lang",lang);syncLang()};document.getElementById("year").textContent=new Date().getFullYear();
+const fab=document.getElementById("chatFab"),win=document.getElementById("chatWindow"),close=document.getElementById("chatClose"),chatBody=document.getElementById("chatBody"),form=document.getElementById("chatForm"),input=document.getElementById("chatInput"),send=document.getElementById("chatSend");let chatId=localStorage.getItem("portfolio_chat_id_v2"),visitorName=localStorage.getItem("portfolio_chat_name_v2")||"",unsubscribe=null,visitorUid=null,visitorEmail=localStorage.getItem("portfolio_chat_email_v3")||"",firebaseReady=false,currentUser=null,db=null,auth=null;
+const GOOGLE_CHAT_BRIDGE_URL="https://script.google.com/macros/s/AKfycbxH4XSPd6QWVRXWZMz0TX-5p4ldjwt8S7gdsaH4pnFnqQaOi5K37ZeaRe8EYhx1WK36/exec";
+async function notifyGoogleChatBridge(payload){if(!GOOGLE_CHAT_BRIDGE_URL)return;try{await fetch(GOOGLE_CHAT_BRIDGE_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload),mode:"no-cors",keepalive:true})}catch(e){console.warn("Google Chat bridge notification failed:",e)}}
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]))}function showChatMessage(text){chatBody.innerHTML='<div class="chat-note">'+esc(text)+"</div>"}function showStart(){form.style.display="none";if(!currentUser){chatBody.innerHTML='<div class="chat-start"><b>🔐 Sign up / Login করুন</b><p class="chat-note">চ্যাট করার আগে আপনার account তৈরি করে Login করতে হবে।</p><div style="display:grid;gap:8px"><a class="btn primary" style="text-align:center" href="signup.html">Create Account</a><a class="btn" style="text-align:center" href="login.html">Login</a><button id="googleLogin" class="btn">Continue with Google</button></div></div>';document.getElementById("googleLogin").onclick=loginWithGoogle;return}chatBody.innerHTML='<div class="chat-start"><b>চ্যাট শুরু করুন</b><p class="chat-note">Signed in as: <strong>'+esc(currentUser.email||"")+'</strong></p><input id="visitorName" placeholder="আপনার নাম" maxlength="60" value="'+esc(currentUser.displayName||visitorName||"")+'"><button id="startChat">Start Chat</button><button id="logoutChat" class="btn" style="background:transparent;color:var(--text);border:1px solid var(--line)">Logout</button></div>';document.getElementById("startChat").onclick=startChat;document.getElementById("logoutChat").onclick=async()=>{await signOut(auth);chatId=null;visitorName="";localStorage.removeItem("portfolio_chat_id_v2");localStorage.removeItem("portfolio_chat_name_v2")}}
+async function initFirebase(){try{const app=initializeApp(firebaseConfig);db=getFirestore(app);auth=getAuth(app);firebaseReady=true;onAuthStateChanged(auth,user=>{currentUser=user;visitorUid=user?.uid||null;visitorEmail=user?.email||"";if(visitorEmail)localStorage.setItem("portfolio_chat_email_v3",visitorEmail);if(!user){if(unsubscribe){unsubscribe();unsubscribe=null}form.style.display="none";chatId=null;visitorName="";localStorage.removeItem("portfolio_chat_id_v2");localStorage.removeItem("portfolio_chat_name_v2");showStart();return}if(chatId){form.style.display="flex";startListener()}else showStart()})}catch(error){console.error("Firebase chat initialization failed:",error);firebaseReady=false;showChatMessage("Live Chat এখন সংযোগ করতে পারছে না। কিছুক্ষণ পরে আবার চেষ্টা করুন।")}}
+async function loginWithGoogle(){try{const provider=new GoogleAuthProvider();await signInWithPopup(auth,provider)}catch(error){console.error("Google login failed:",error);showChatMessage("Google Login সম্পন্ন হয়নি। আবার চেষ্টা করুন।")}}
+async function startChat(){const nameInput=document.getElementById("visitorName"),n=nameInput?.value.trim();if(!currentUser||!visitorUid||!currentUser.email){showStart();return}if(!n){nameInput?.focus();return}if(!firebaseReady||!visitorUid||!db){showChatMessage("Chat service প্রস্তুত হচ্ছে। আবার চেষ্টা করুন।");return}try{visitorName=n;const ref=doc(collection(db,"chats"));chatId=ref.id;await setDoc(ref,{visitorName:n,visitorEmail:currentUser.email,ownerUid:visitorUid,createdAt:serverTimestamp(),updatedAt:serverTimestamp(),status:"open",lastSender:"visitor"});localStorage.setItem("portfolio_chat_id_v2",chatId);localStorage.setItem("portfolio_chat_name_v2",visitorName);form.style.display="flex";startListener()}catch(error){console.error("Could not create chat:",error);showChatMessage("Chat শুরু করা যাচ্ছে না। Firebase Firestore permission/database settings পরীক্ষা করুন।")}}
+function startListener(){if(!db||!chatId)return;if(unsubscribe)unsubscribe();const q=query(collection(db,"chats",chatId,"messages"),orderBy("createdAt","asc"));unsubscribe=onSnapshot(q,snap=>{chatBody.innerHTML="";if(snap.empty)showChatMessage("আপনার মেসেজ লিখুন। আমি যত দ্রুত সম্ভব উত্তর দেব।");snap.forEach(d=>{const m=d.data(),who=m.sender==="admin"?"admin":"visitor",t=m.createdAt?.toDate?m.createdAt.toDate().toLocaleString("bn-BD"):"";chatBody.insertAdjacentHTML("beforeend",'<div class="chat-msg '+who+'">'+esc(m.text||"")+'<small>'+(who==="admin"?"Admin":esc(visitorName||"আপনি"))+" · "+t+"</small></div>")});chatBody.scrollTop=chatBody.scrollHeight},error=>{console.error("Chat listener error:",error);showChatMessage("Chat data পাওয়া যাচ্ছে না। Firestore Security Rules বা Database setup পরীক্ষা করুন।")})}
+async function sendMessage(){const text=input.value.trim();if(!text||!chatId||!firebaseReady)return;input.value="";try{await addDoc(collection(db,"chats",chatId,"messages"),{text,sender:"visitor",senderName:visitorName||currentUser?.displayName||"Visitor",senderEmail:currentUser?.email||visitorEmail||"",createdAt:serverTimestamp()});await setDoc(doc(db,"chats",chatId),{updatedAt:serverTimestamp(),status:"open",lastSender:"visitor"},{merge:true});await notifyGoogleChatBridge({action:"visitor_message",chatId,visitorName:visitorName||currentUser?.displayName||"Visitor",visitorEmail:currentUser?.email||visitorEmail||"",text,sentAt:new Date().toISOString()})}catch(error){console.error("Message send failed:",error);showChatMessage("মেসেজ পাঠানো যায়নি। Firestore permission পরীক্ষা করুন।");input.value=text}}
+send.onclick=sendMessage;input.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendMessage()}});fab.onclick=()=>{const opening=!win.classList.contains("open");win.classList.toggle("open",opening);if(!opening)return;if(!firebaseReady){showChatMessage("Live Chat সংযোগ হচ্ছে...");return}if(!currentUser||!visitorUid){form.style.display="none";showStart();return}if(chatId){form.style.display="flex";startListener()}else showStart()};close.onclick=()=>win.classList.remove("open");initFirebase();
 </script>
 </body>
 </html>
