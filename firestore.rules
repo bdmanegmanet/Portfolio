@@ -2,7 +2,7 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     function isAdmin() {
-      return request.auth != null && request.auth.token.email == "ariful40807@gmail.com";
+      return request.auth != null && request.auth.token.email in ["ariful40807@gmail.com", "fatema0063@gmail.com"];
     }
     match /chats/{chatId} {
       allow create: if request.auth != null && request.resource.data.ownerUid == request.auth.uid;
