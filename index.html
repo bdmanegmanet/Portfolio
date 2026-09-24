@@ -101,7 +101,8 @@ footer{padding:34px 0;border-top:1px solid var(--line);color:var(--muted);font-s
 <footer class="container"><span>© <span id="year"></span> MD. ARIFUL ISLAM</span><span><span class="lang-bn">Built with HTML • CSS • JavaScript</span><span class="lang-en">Built with HTML • CSS • JavaScript</span></span></footer>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAcPJkmhqToGVVzNK3z5QyzJMEZvzT91rM",
@@ -112,7 +113,7 @@ const firebaseConfig = {
   appId: "1:814994801193:web:9f0e02dab060392cdf9238"
 };
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+const db = getFirestore(app);\nconst auth = getAuth(app);
 
 const root=document.documentElement, body=document.body, themeBtn=document.getElementById('themeBtn'), langBtn=document.getElementById('langBtn');
 const savedTheme=localStorage.getItem('theme'); if(savedTheme) root.dataset.theme=savedTheme;
@@ -127,7 +128,7 @@ const fab=document.getElementById('chatFab'), win=document.getElementById('chatW
 const chatBody=document.getElementById('chatBody'), form=document.getElementById('chatForm'), input=document.getElementById('chatInput'), send=document.getElementById('chatSend');
 let chatId=localStorage.getItem('portfolio_chat_id');
 let visitorName=localStorage.getItem('portfolio_chat_name')||"Visitor";
-let unsubscribe=null;
+let unsubscribe=null;\nlet visitorUid=null;\nlet readyPromise=signInAnonymously(auth).then(({user})=>{visitorUid=user.uid;}).catch(()=>null);
 
 function esc(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]));}
 function renderStart(){
@@ -138,7 +139,7 @@ function renderStart(){
     if(!n)return;
     visitorName=n; localStorage.setItem('portfolio_chat_name',n);
     const ref=doc(collection(db,'chats')); chatId=ref.id;
-    await setDoc(ref,{visitorName:n,createdAt:serverTimestamp(),updatedAt:serverTimestamp(),status:'open'});
+    await readyPromise;\n    await setDoc(ref,{visitorName:n,ownerUid:visitorUid,createdAt:serverTimestamp(),updatedAt:serverTimestamp(),status:'open',lastSender:'visitor'});
     localStorage.setItem('portfolio_chat_id',chatId);
     form.style.display='flex'; startListener();
   };
