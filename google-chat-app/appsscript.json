@@ -1,0 +1,12 @@
+{
+  "timeZone": "Asia/Dhaka",
+  "exceptionLogging": "STACKDRIVER",
+  "runtimeVersion": "V8",
+  "oauthScopes": ["https://www.googleapis.com/auth/script.external_request"],
+  "chat": {},
+  "dependencies": {
+    "enabledAdvancedServices": [
+      {"userSymbol":"Chat","version":"v1","serviceId":"chat"}
+    ]
+  }
+}
