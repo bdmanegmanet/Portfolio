@@ -25,6 +25,14 @@ footer{padding:34px 0;border-top:1px solid var(--line);color:var(--muted);font-s
 .lang-bn{display:inline}.lang-en{display:none}.en .lang-bn{display:none}.en .lang-en{display:inline}
 @media(max-width:850px){.navlinks{display:none}.menu{display:block}.nav-actions{margin-left:auto;margin-right:8px}.hero-grid,.about{grid-template-columns:1fr}.visual{max-width:560px;margin:auto}.skills{grid-template-columns:repeat(2,1fr)}.projects{grid-template-columns:1fr}.section-head{display:block}.section-head p{margin-top:13px}}
 @media(max-width:520px){.hero{min-height:auto;padding-top:125px}.skills{grid-template-columns:1fr}.avatar{width:220px;height:220px}.contact{padding:30px 22px}footer{display:block}footer span{display:block;margin-top:8px}.facts{grid-template-columns:1fr}}
+
+/* Firebase live chat */
+.chat-fab{position:fixed;right:20px;bottom:20px;z-index:50;width:58px;height:58px;border:0;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:24px;cursor:pointer;box-shadow:0 14px 35px rgba(0,0,0,.25)}
+.chat-window{position:fixed;right:20px;bottom:88px;z-index:49;width:min(370px,calc(100vw - 30px));height:520px;display:none;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);overflow:hidden}
+.chat-window.open{display:flex}.chat-head{padding:15px 16px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;display:flex;justify-content:space-between;align-items:center}.chat-head b{font-size:1rem}.chat-close{border:0;background:rgba(255,255,255,.16);color:#fff;border-radius:8px;padding:5px 9px;cursor:pointer}
+.chat-body{flex:1;overflow:auto;padding:14px;background:color-mix(in srgb,var(--bg) 88%,var(--panel))}.chat-msg{max-width:82%;padding:9px 11px;border-radius:13px;margin:7px 0;font-size:.82rem;word-break:break-word}.chat-msg.visitor{margin-left:auto;background:var(--accent);color:#fff;border-bottom-right-radius:4px}.chat-msg.admin{background:var(--panel);border:1px solid var(--line);border-bottom-left-radius:4px}.chat-msg small{display:block;opacity:.65;font-size:.64rem;margin-top:3px}.chat-start{padding:16px;border-bottom:1px solid var(--line)}.chat-start input,.chat-form textarea{width:100%;border:1px solid var(--line);background:var(--bg);color:var(--text);border-radius:10px;padding:10px;font:inherit;outline:none}.chat-start button,.chat-form button{margin-top:8px;width:100%;border:0;border-radius:10px;padding:10px;background:var(--accent);color:#fff;font-weight:700;cursor:pointer}.chat-form{padding:10px;border-top:1px solid var(--line);display:flex;gap:7px}.chat-form textarea{resize:none;height:45px}.chat-form button{width:auto;margin:0;padding:0 14px}.chat-note{padding:12px;color:var(--muted);font-size:.76rem;text-align:center}
+@media(max-width:520px){.chat-window{right:10px;bottom:78px;width:calc(100vw - 20px);height:min(560px,calc(100vh - 100px))}.chat-fab{right:14px;bottom:14px}}
+
 </style>
 </head>
 <body>
@@ -78,9 +86,34 @@ footer{padding:34px 0;border-top:1px solid var(--line);color:var(--muted);font-s
 <a class="chip" href="mailto:ariful40807@gmail.com">Email</a>
 <a class="chip" href="tel:+8801862240807">+880 1862-240807</a>
 </div></div></div></section>
+
+<button class="chat-fab" id="chatFab" aria-label="Live Chat" title="Live Chat">💬</button>
+<div class="chat-window" id="chatWindow">
+  <div class="chat-head"><b>💬 Live Chat</b><button class="chat-close" id="chatClose">✕</button></div>
+  <div class="chat-body" id="chatBody"></div>
+  <div class="chat-form" id="chatForm" style="display:none">
+    <textarea id="chatInput" placeholder="আপনার মেসেজ লিখুন..."></textarea>
+    <button id="chatSend">➤</button>
+  </div>
+</div>
+
 </main>
 <footer class="container"><span>© <span id="year"></span> MD. ARIFUL ISLAM</span><span><span class="lang-bn">Built with HTML • CSS • JavaScript</span><span class="lang-en">Built with HTML • CSS • JavaScript</span></span></footer>
-<script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAcPJkmhqToGVVzNK3z5QyzJMEZvzT91rM",
+  authDomain: "giga-trail-9sjh2.firebaseapp.com",
+  projectId: "giga-trail-9sjh2",
+  storageBucket: "giga-trail-9sjh2.firebasestorage.app",
+  messagingSenderId: "814994801193",
+  appId: "1:814994801193:web:9f0e02dab060392cdf9238"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
 const root=document.documentElement, body=document.body, themeBtn=document.getElementById('themeBtn'), langBtn=document.getElementById('langBtn');
 const savedTheme=localStorage.getItem('theme'); if(savedTheme) root.dataset.theme=savedTheme;
 function syncTheme(){const dark=root.dataset.theme==='dark';themeBtn.textContent=dark?'☀':'☾';}
@@ -89,6 +122,50 @@ themeBtn.onclick=()=>{const dark=root.dataset.theme==='dark';root.dataset.theme=
 let lang=localStorage.getItem('lang')||'bn'; function syncLang(){body.classList.toggle('en',lang==='en');langBtn.textContent=lang==='bn'?'EN':'বাংলা';document.documentElement.lang=lang;}
 syncLang(); langBtn.onclick=()=>{lang=lang==='bn'?'en':'bn';localStorage.setItem('lang',lang);syncLang();};
 document.getElementById('year').textContent=new Date().getFullYear();
+
+const fab=document.getElementById('chatFab'), win=document.getElementById('chatWindow'), close=document.getElementById('chatClose');
+const chatBody=document.getElementById('chatBody'), form=document.getElementById('chatForm'), input=document.getElementById('chatInput'), send=document.getElementById('chatSend');
+let chatId=localStorage.getItem('portfolio_chat_id');
+let visitorName=localStorage.getItem('portfolio_chat_name')||"Visitor";
+let unsubscribe=null;
+
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]));}
+function renderStart(){
+  if(chatId){ form.style.display='flex'; startListener(); return; }
+  chatBody.innerHTML='<div class="chat-start"><b>চ্যাট শুরু করুন</b><p class="chat-note">আপনার নাম দিন, তারপর সরাসরি মেসেজ পাঠাতে পারবেন।</p><input id="visitorName" placeholder="আপনার নাম"><button id="startChat">Start Chat</button></div>';
+  document.getElementById('startChat').onclick=async()=>{
+    const n=document.getElementById('visitorName').value.trim();
+    if(!n)return;
+    visitorName=n; localStorage.setItem('portfolio_chat_name',n);
+    const ref=doc(collection(db,'chats')); chatId=ref.id;
+    await setDoc(ref,{visitorName:n,createdAt:serverTimestamp(),updatedAt:serverTimestamp(),status:'open'});
+    localStorage.setItem('portfolio_chat_id',chatId);
+    form.style.display='flex'; startListener();
+  };
+}
+function startListener(){
+  if(unsubscribe)unsubscribe();
+  const q=query(collection(db,'chats',chatId,'messages'),orderBy('createdAt','asc'));
+  unsubscribe=onSnapshot(q,snap=>{
+    chatBody.innerHTML='';
+    if(snap.empty){chatBody.innerHTML='<div class="chat-note">আপনার মেসেজ লিখুন। আমি যত দ্রুত সম্ভব উত্তর দেব।</div>';}
+    snap.forEach(d=>{
+      const m=d.data(), who=m.sender==='admin'?'admin':'visitor';
+      const t=m.createdAt?.toDate ? m.createdAt.toDate().toLocaleString('bn-BD') : '';
+      chatBody.insertAdjacentHTML('beforeend',`<div class="chat-msg ${who}">${esc(m.text||'')}<small>${who==='admin'?'Admin':esc(visitorName)} · ${t}</small></div>`);
+    });
+    chatBody.scrollTop=chatBody.scrollHeight;
+  });
+}
+async function sendMessage(){
+  const text=input.value.trim(); if(!text||!chatId)return;
+  input.value='';
+  await addDoc(collection(db,'chats',chatId,'messages'),{text,sender:'visitor',senderName:visitorName,createdAt:serverTimestamp()});
+  await setDoc(doc(db,'chats',chatId),{updatedAt:serverTimestamp(),status:'open'},{merge:true});
+}
+send.onclick=sendMessage; input.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}});
+fab.onclick=()=>{win.classList.toggle('open');if(win.classList.contains('open'))renderStart();};
+close.onclick=()=>win.classList.remove('open');
 </script>
 </body>
 </html>
