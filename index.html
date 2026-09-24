@@ -30,7 +30,7 @@ footer{padding:34px 0;border-top:1px solid var(--line);color:var(--muted);font-s
 .chat-fab{position:fixed;right:20px;bottom:20px;z-index:50;width:58px;height:58px;border:0;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:24px;cursor:pointer;box-shadow:0 14px 35px rgba(0,0,0,.25)}
 .chat-window{position:fixed;right:20px;bottom:88px;z-index:49;width:min(370px,calc(100vw - 30px));height:520px;display:none;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);overflow:hidden}
 .chat-window.open{display:flex}.chat-head{padding:15px 16px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;display:flex;justify-content:space-between;align-items:center}.chat-head b{font-size:1rem}.chat-close{border:0;background:rgba(255,255,255,.16);color:#fff;border-radius:8px;padding:5px 9px;cursor:pointer}
-.chat-body{flex:1;overflow:auto;padding:14px;background:color-mix(in srgb,var(--bg) 88%,var(--panel))}.chat-msg{max-width:82%;padding:9px 11px;border-radius:13px;margin:7px 0;font-size:.82rem;word-break:break-word}.chat-msg.visitor{margin-left:auto;background:var(--accent);color:#fff;border-bottom-right-radius:4px}.chat-msg.admin{background:var(--panel);border:1px solid var(--line);border-bottom-left-radius:4px}.chat-msg small{display:block;opacity:.65;font-size:.64rem;margin-top:3px}.chat-start{padding:16px;border-bottom:1px solid var(--line)}.chat-start input,.chat-form textarea{width:100%;border:1px solid var(--line);background:var(--bg);color:var(--text);border-radius:10px;padding:10px;font:inherit;outline:none}.chat-start button,.chat-form button{margin-top:8px;width:100%;border:0;border-radius:10px;padding:10px;background:var(--accent);color:#fff;font-weight:700;cursor:pointer}.chat-form{padding:10px;border-top:1px solid var(--line);display:flex;gap:7px}.chat-form textarea{resize:none;height:45px}.chat-form button{width:auto;margin:0;padding:0 14px}.chat-note{padding:12px;color:var(--muted);font-size:.76rem;text-align:center}
+.chat-body{flex:1;overflow:auto;padding:14px;background:color-mix(in srgb,var(--bg) 88%,var(--panel))}.chat-msg{max-width:82%;padding:9px 11px;border-radius:13px;margin:7px 0;font-size:.82rem;word-break:break-word}.chat-msg.visitor{margin-left:auto;background:var(--accent);color:#fff;border-bottom-right-radius:4px}.chat-msg.admin{background:var(--panel);border:1px solid var(--line);border-bottom-left-radius:4px}.chat-msg small{display:block;opacity:.65;font-size:.64rem;margin-top:3px}.chat-start{padding:16px;border-bottom:1px solid var(--line)}.chat-start input,.chat-form textarea{width:100%;border:1px solid var(--line);background:var(--bg);color:var(--text);border-radius:10px;padding:10px;font:inherit;outline:none}.chat-start button{margin-top:8px;width:100%;border:0;border-radius:10px;padding:10px;background:var(--accent);color:#fff;font-weight:700;cursor:pointer}.chat-start button,.chat-form button{margin-top:8px;width:100%;border:0;border-radius:10px;padding:10px;background:var(--accent);color:#fff;font-weight:700;cursor:pointer}.chat-form{padding:10px;border-top:1px solid var(--line);display:flex;gap:7px}.chat-form textarea{resize:none;height:45px}.chat-form button{width:auto;margin:0;padding:0 14px}.chat-note{padding:12px;color:var(--muted);font-size:.76rem;text-align:center}
 @media(max-width:520px){.chat-window{right:10px;bottom:78px;width:calc(100vw - 20px);height:min(560px,calc(100vh - 100px))}.chat-fab{right:14px;bottom:14px}}
 
 </style>
@@ -101,7 +101,7 @@ footer{padding:34px 0;border-top:1px solid var(--line);color:var(--muted);font-s
 <footer class="container"><span>© <span id="year"></span> MD. ARIFUL ISLAM</span><span><span class="lang-bn">Built with HTML • CSS • JavaScript</span><span class="lang-en">Built with HTML • CSS • JavaScript</span></span></footer>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -156,7 +156,9 @@ let chatId = localStorage.getItem("portfolio_chat_id_v2");
 let visitorName = localStorage.getItem("portfolio_chat_name_v2") || "";
 let unsubscribe = null;
 let visitorUid = null;
+let visitorEmail = localStorage.getItem("portfolio_chat_email_v3") || "";
 let firebaseReady = false;
+let currentUser = null;
 let db = null;
 let auth = null;
 
@@ -170,7 +172,12 @@ function showChatMessage(text) {
 }
 function showStart() {
   form.style.display = "none";
-  chatBody.innerHTML = '<div class="chat-start"><b>চ্যাট শুরু করুন</b><p class="chat-note">আপনার নাম দিন, তারপর সরাসরি মেসেজ পাঠাতে পারবেন।</p><input id="visitorName" placeholder="আপনার নাম" maxlength="60"><button id="startChat">Start Chat</button></div>';
+  if (!currentUser) {
+    chatBody.innerHTML = '<div class="chat-start"><b>🔐 Google দিয়ে Login করুন</b><p class="chat-note">চ্যাট করার আগে আপনার Gmail/Google account দিয়ে একবার Sign in করতে হবে।</p><button id="googleLogin">Continue with Google</button></div>';
+    document.getElementById("googleLogin").onclick = loginWithGoogle;
+    return;
+  }
+  chatBody.innerHTML = '<div class="chat-start"><b>চ্যাট শুরু করুন</b><p class="chat-note">আপনি হিসেবে: <strong>' + esc(currentUser.email || "") + '</strong></p><input id="visitorName" placeholder="আপনার নাম" maxlength="60" value="' + esc(currentUser.displayName || visitorName || "") + '"><button id="startChat">Start Chat</button></div>';
   document.getElementById("startChat").onclick = startChat;
 }
 async function initFirebase() {
@@ -178,24 +185,41 @@ async function initFirebase() {
     const app = initializeApp(firebaseConfig);
     db = getFirestore(app);
     auth = getAuth(app);
-    const result = await signInAnonymously(auth);
-    visitorUid = result.user.uid;
     firebaseReady = true;
-    if (chatId) {
-      form.style.display = "flex";
-      startListener();
-    } else {
-      showStart();
-    }
+    onAuthStateChanged(auth, user => {
+      currentUser = user;
+      visitorUid = user?.uid || null;
+      visitorEmail = user?.email || "";
+      if (visitorEmail) localStorage.setItem("portfolio_chat_email_v3", visitorEmail);
+      if (user && chatId) {
+        form.style.display = "flex";
+        startListener();
+      } else {
+        showStart();
+      }
+    });
   } catch (error) {
     console.error("Firebase chat initialization failed:", error);
     firebaseReady = false;
     showChatMessage("Live Chat এখন সংযোগ করতে পারছে না। কিছুক্ষণ পরে আবার চেষ্টা করুন।");
   }
 }
+async function loginWithGoogle() {
+  try {
+    const provider = new GoogleAuthProvider();
+    await signInWithPopup(auth, provider);
+  } catch (error) {
+    console.error("Google login failed:", error);
+    showChatMessage("Google Login সম্পন্ন হয়নি। আবার চেষ্টা করুন।");
+  }
+}
 async function startChat() {
   const nameInput = document.getElementById("visitorName");
   const n = nameInput?.value.trim();
+  if (!currentUser || !visitorUid || !currentUser.email) {
+    showStart();
+    return;
+  }
   if (!n) {
     nameInput?.focus();
     return;
@@ -210,6 +234,7 @@ async function startChat() {
     chatId = ref.id;
     await setDoc(ref, {
       visitorName: n,
+      visitorEmail: currentUser.email,
       ownerUid: visitorUid,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
@@ -257,7 +282,8 @@ async function sendMessage() {
     await addDoc(collection(db, "chats", chatId, "messages"), {
       text,
       sender: "visitor",
-      senderName: visitorName || "Visitor",
+      senderName: visitorName || currentUser?.displayName || "Visitor",
+      senderEmail: currentUser?.email || visitorEmail || "",
       createdAt: serverTimestamp()
     });
     await setDoc(doc(db, "chats", chatId), {
@@ -286,7 +312,7 @@ fab.onclick = () => {
       if (chatId) {
         form.style.display = "flex";
         startListener();
-      } else if (visitorName) {
+      } else if (visitorName && currentUser) {
         showStart();
         const field = document.getElementById("visitorName");
         if (field) field.value = visitorName;
